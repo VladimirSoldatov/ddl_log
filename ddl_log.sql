@@ -190,7 +190,7 @@ ALTER TABLE public.defir_ddl_log ALTER COLUMN "LogId" ADD GENERATED ALWAYS AS ID
 --
 
 CREATE TABLE public.forth (
-    id integer,
+    id bigint,
     name character varying(50),
     active boolean
 );
