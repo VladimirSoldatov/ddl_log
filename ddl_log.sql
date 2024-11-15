@@ -220,6 +220,13 @@ ALTER TABLE ONLY public.defir_ddl_log
 
 
 --
+-- Name: fourth_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX fourth_id_idx ON public.forth USING btree (id);
+
+
+--
 -- Name: DEFIR_ddl_log_create; Type: EVENT TRIGGER; Schema: -; Owner: postgres
 --
 
