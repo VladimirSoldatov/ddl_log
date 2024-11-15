@@ -186,28 +186,30 @@ ALTER TABLE public.defir_ddl_log ALTER COLUMN "LogId" ADD GENERATED ALWAYS AS ID
 
 
 --
--- Name: test; Type: TABLE; Schema: public; Owner: postgres
+-- Name: forth; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.test (
+CREATE TABLE public.forth (
     id integer,
-    name character varying(50)
+    name character varying(50),
+    active boolean
 );
 
 
-ALTER TABLE public.test OWNER TO postgres;
+ALTER TABLE public.forth OWNER TO postgres;
 
 --
--- Name: test1; Type: TABLE; Schema: public; Owner: postgres
+-- Name: third; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.test1 (
+CREATE TABLE public.third (
     id integer,
-    name character varying(50)
+    name character varying(50),
+    active boolean
 );
 
 
-ALTER TABLE public.test1 OWNER TO postgres;
+ALTER TABLE public.third OWNER TO postgres;
 
 --
 -- Name: defir_ddl_log PK_DDL_Log_LogId; Type: CONSTRAINT; Schema: public; Owner: postgres
