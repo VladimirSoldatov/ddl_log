@@ -161,6 +161,45 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: defir_ddl_log; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.defir_ddl_log (
+    "LogId" integer NOT NULL,
+    "LogDate" timestamp without time zone NOT NULL,
+    "ClassId" integer,
+    "ObjId" integer,
+    "ObjsubId" integer,
+    "ClientAddr" inet,
+    "UserName" character varying(256),
+    "EventType" character varying(100),
+    "ObjectType" text,
+    "SchemaName" text,
+    "ObjectName" text,
+    "Command" text,
+    "CommandTag" text,
+    "CommandText" text,
+    "ApplicationName" character varying
+);
+
+
+ALTER TABLE public.defir_ddl_log OWNER TO postgres;
+
+--
+-- Name: defir_ddl_log_LogId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.defir_ddl_log ALTER COLUMN "LogId" ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public."defir_ddl_log_LogId_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
 -- Name: forth; Type: TABLE; Schema: public; Owner: postgres
 --
 
