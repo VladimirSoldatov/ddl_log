@@ -62,7 +62,7 @@ CREATE FUNCTION public."DEFIR_ddl_log_record_add"() RETURNS event_trigger
   BEGIN
 	IF _tg_event  = 'sql_drop'
     THEN
-      INSERT INTO postgres.public.DEFIR_ddl_log
+      INSERT INTO local_foreign_table
       (
          "LogDate",
          "ClassId",
@@ -105,7 +105,7 @@ CREATE FUNCTION public."DEFIR_ddl_log_record_add"() RETURNS event_trigger
 
     ELSE
 
-      INSERT INTO  postgres.public.DEFIR_ddl_log
+      INSERT INTO  local_foreign_table
       (
          "LogDate",
          "ClassId",
@@ -156,6 +156,28 @@ CREATE FUNCTION public."DEFIR_ddl_log_record_add"() RETURNS event_trigger
 
 ALTER FUNCTION public."DEFIR_ddl_log_record_add"() OWNER TO postgres;
 
+--
+-- Name: foreign_server; Type: SERVER; Schema: -; Owner: postgres
+--
+
+CREATE SERVER foreign_server FOREIGN DATA WRAPPER postgres_fdw OPTIONS (
+    dbname 'postgres',
+    host 'localhost'
+);
+
+
+ALTER SERVER foreign_server OWNER TO postgres;
+
+--
+-- Name: USER MAPPING postgres SERVER foreign_server; Type: USER MAPPING; Schema: -; Owner: postgres
+--
+
+CREATE USER MAPPING FOR postgres SERVER foreign_server OPTIONS (
+    password 'postgres',
+    "user" 'postgres'
+);
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -172,6 +194,49 @@ CREATE TABLE public.forth (
 
 
 ALTER TABLE public.forth OWNER TO postgres;
+
+--
+-- Name: local_foreign_table; Type: FOREIGN TABLE; Schema: public; Owner: postgres
+--
+
+CREATE FOREIGN TABLE public.local_foreign_table (
+    "LogId" integer NOT NULL,
+    "LogDate" timestamp without time zone NOT NULL,
+    "ClassId" integer,
+    "ObjId" integer,
+    "ObjsubId" integer,
+    "ClientAddr" inet,
+    "UserName" character varying(256),
+    "EventType" character varying(100),
+    "ObjectType" text,
+    "SchemaName" text,
+    "ObjectName" text,
+    "Command" text,
+    "CommandTag" text,
+    "CommandText" text,
+    "ApplicationName" character varying
+)
+SERVER foreign_server
+OPTIONS (
+    table_name 'public.defir_ddl_log'
+);
+
+
+ALTER FOREIGN TABLE public.local_foreign_table OWNER TO postgres;
+
+--
+-- Name: local_foreign_table_LogId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.local_foreign_table ALTER COLUMN "LogId" ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public."local_foreign_table_LogId_seq"
+    START WITH 0
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1
+);
+
 
 --
 -- Name: third; Type: TABLE; Schema: public; Owner: postgres
